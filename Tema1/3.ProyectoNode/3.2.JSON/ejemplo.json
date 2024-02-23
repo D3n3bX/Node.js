@@ -1,0 +1,11 @@
+{
+  "titulo": "Curso de Node.js",
+  "autor": "Juan Pérez",
+  "temas": [
+    "JavaScript básico",
+    "Asincronía",
+    "Express"
+  ],
+  "disponible": true,
+  "estudiantes": 122
+}
