@@ -1,0 +1,139 @@
+###
+POST http://localhost:3000/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Diego",
+    "age": 20,
+    "email": "diego.garcia2@live.u-tad.com",
+    "password": "1234"
+}
+
+###
+POST http://localhost:3000/api/storage HTTP/1.1
+Content-Type: multipart/form-data; boundary=Boundry
+
+--Boundry
+Content-Disposition: form-data; name="image"; filename="cards.jpg"
+Content-Type: image/jpg
+
+< ./cards.jpg
+--Boundry--
+
+###
+GET http://localhost:3000/api/storage HTTP/1.1
+
+###
+GET http://localhost:3000/api/users HTTP/1.1
+api_key: 7d54605000fb126dd898abe500a5111379f6e440e8e1018ba9672bd1d198b876
+
+###
+POST http://localhost:3000/api/tracks HTTP/1.1
+Content-Type: application/json
+
+{
+  "basura": "basura",
+  "name": "BESTIE",
+  "cover": "https://example.com/shape_of_you_cover.jpg",
+  "artist": {
+    "name": "Ed Sheeran",
+    "nickname": "Gingerbread Man",
+    "nationality": "British"
+  },
+  "duration": {
+    "start": 0,
+    "end": 235
+  },
+  "mediaId": "65deee121ddcd3caf085d573"
+}
+
+###
+GET http://localhost:3000/api/tracks/65df01cdd18618d44f2a09df HTTP/1.1
+
+###
+PUT http://localhost:3000/api/tracks/65df01cdd18618d44f2a09df HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Shape of You",
+  "cover": "https://example.com/shape_of_you_cover.jpg",
+  "artist": {
+    "name": "Bestie",
+    "nickname": "Gingerbread Man",
+    "nationality": "British"
+  },
+  "duration": {
+    "start": 0,
+    "end": 235
+  },
+  "mediaId": "65deee121ddcd3caf085d573"
+}
+
+###
+DELETE http://localhost:3000/api/tracks/65e82e008f987fc8922cd217
+
+###
+DELETE http://localhost:3000/api/storage/65e8373a83f6a3b1803535bc
+
+
+###
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Bestie",
+  "age": 333, 
+  "email": "bestie4@gmail.com", 
+  "password": "123456abcd"
+}
+
+###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "jhondoe@gmail.com", 
+  "password": "123456abcd"
+}
+
+###
+GET http://localhost:3000/api/tracks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWU4NDYyMTRiMzQxOGU4NWM5NGJmODkiLCJyb2xlIjpbInVzZXIiXSwiaWF0IjoxNzEwMzIxMzg4LCJleHAiOjE3MTA0MDc3ODh9.OPnkGtZdsp7faEJoKZeAzURiul8eRcNdt_qzykB7YCs
+
+###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "bestie4@gmail.com", 
+  "password": "123456abcd"
+}
+
+###
+POST http://localhost:3000/api/tracks
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWU4NDYyMTRiMzQxOGU4NWM5NGJmODkiLCJyb2xlIjpbInVzZXIiXSwiaWF0IjoxNzEwMzI2MzQ3LCJleHAiOjE3MTA0MTI3NDd9.G4968gogo2myDleDstLp4JYgNsmFfFYyFrwBO0NAAqM
+
+{
+  "name": "BESTIE2",
+  "cover": "https://example.com/shape_of_you_cover.jpg",
+  "artist": {
+    "name": "Ed Sheeran",
+    "nickname": "Gingerbread Man",
+    "nationality": "British"
+  },
+  "duration": {
+    "start": 0,
+    "end": 235
+  },
+  "mediaId": "65deee121ddcd3caf085d573"
+}
+
+###
+PATCH http://localhost:3000/api/auth/65e84fd63f75e4a8d9f393d1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWU4NTE5YTBkYTU5MTYzMDdlYTE3OTYiLCJyb2xlIjpbImFkbWluIl0sImlhdCI6MTcxMDMzMDE1NiwiZXhwIjoxNzEwNDE2NTU2fQ.3ORvQUSxM6ojvDhhJhIMYxy35PPHkUq8JTQtw0TOybM
+
+{
+  "role": ["admin"]
+}

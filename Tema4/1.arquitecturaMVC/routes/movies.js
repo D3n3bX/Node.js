@@ -1,19 +1,12 @@
-const express = require('express')
 const crypto = require('node:crypto')
-const { validateMovie, validatePartialMovie } = require('./schemas/movies')
-const movies = require('./movies.json')
+const { Router } = require('express')
 
-const app = express()
-app.disable('x-powered-by')
-app.use(express.json()) 
+const movies = require('../movies.json')
+const { validateMovie, validatePartialMovie } = require('../schemas/movies')
 
-// Petición GET para la raíz
-app.get('/', (req, res) => {
-    res.json({ message: 'Hola Mundo' })
-})
+const moviesRouter = Router()
 
-// Petición GET para la url de /movies
-app.get('/movies', (req, res) => {
+moviesRouter.get('/', (req, res) => {
     const { genre } = req.query // Recuperamos el genre de la query en la url
     
     // Si hay un genre
@@ -28,8 +21,7 @@ app.get('/movies', (req, res) => {
     res.json(movies) // Devolvemos todas las movies
 })
 
-// Petición GET para la url /movies/:id -> :id es un parámetro
-app.get('/movies/:id', (req, res) => {
+moviesRouter.get('/:id', (req, res) => {
     const { id } = req.params // Recuperamos el id  del parámetro en la url
     const movie = movies.find(movie => movie.id == id) // Buscamos la movie con el id indicado
     
@@ -41,9 +33,7 @@ app.get('/movies/:id', (req, res) => {
     res.status(404).json({ message: 'Movie not found'}) // Si no, indicamos que no ha sido encontrada
 })
 
-// Petición POST para la url /movies
-app.post('/movies', (req, res) => {
-    
+moviesRouter.post('/', (req, res) => {
     const result = validateMovie(req.body) // Guardamos la movie validada
     
     // Si ha habido algún error en la validación
@@ -61,15 +51,28 @@ app.post('/movies', (req, res) => {
     res.status(201).json(newMovie)
 })
 
-// Petición PATCH para la url /movie/:id
-app.patch('/movie/:id', (req, res) => {
+moviesRouter.delete('/:id', (req, res) => {
     const { id } = req.params
-    const movieIndex = movies.findIndex(movie => movie.id == id)
-    const result = validatePartialMovie(req.body)
+    const movieIndex = movies.findIndex(movie => movie.id == id) // Recuperamos el índice
+
+    if (movieIndex == -1) {
+        return res.status(404).json({ message: 'Movie not found' })
+    }
+
+    movies.splice(movieIndex, 1)
+
+    return res.json({ message: 'Movie delted' })
+})
+
+moviesRouter.patch('/:id', (req, res) => {
+    const { id } = req.params
+    const movieIndex = movies.findIndex(movie => movie.id == id) // Recuperamos el índice
+    const result = validatePartialMovie(req.body) // Guardamos la movie validada
 
     if (!result.success) {
         return res.satatus(400).json({ error: JSON.parse(result.error.message) })
     }
+
     // Si no se ha encontrado
     if (movieIndex == -1) {
         return res.status(404).json({ message: 'Movie not found' }) // lo indicamos
@@ -85,7 +88,4 @@ app.patch('/movie/:id', (req, res) => {
     return res.json(updateMovie) 
 })
 
-const PORT = process.env.PORT ?? 3000
-app.listen(PORT, () => {
-    console.log(`server listening on port http://localhost:${PORT}`)
-})
+module.exports = moviesRouter

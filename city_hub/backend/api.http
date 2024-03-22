@@ -1,0 +1,74 @@
+### Obtener la lista de comercios y, opcionalmente (vía parámetro query,) ordenados por el CIF ascendentemente.
+### Ordenado por defecto (creación)
+GET http://localhost:3001/api/comercios HTTP/1.1
+
+### Ordenado por CIF
+GET http://localhost:3001/api/comercios?orderByCIF=true HTTP/1.1
+
+
+### Obtener un comercio por su CIF -> CommerceSearch
+### Comecrico La Esquina del Sabor
+GET http://localhost:3001/api/comercios/A98765432 HTTP/1.1
+
+### Comercio no encontrado
+GET http://localhost:3001/api/comercios/A98765430 HTTP/1.1
+
+
+### Guardar un comercio
+POST http://localhost:3001/api/comercios HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "La Esquina del Sabor",
+    "CIF": "A98765432",
+    "direccion": "Avenida de los Sabores, 123",
+    "correo": "info@esquinadelsabor.com",
+    "telefono": 987654321
+}
+
+####
+POST http://localhost:3001/api/comercios HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "Moda Urbana",
+    "CIF": "B12345679",
+    "direccion": "Calle de la Moda, 456",
+    "correo": "info@modaurbana.com",
+    "telefono": 987654321
+}
+
+####
+POST http://localhost:3001/api/comercios HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "La Casa del Café",
+    "CIF": "A18765432",
+    "direccion": "Calle del Aroma, 123",
+    "correo": "info@lacasadelcafe.com",
+    "telefono": 987654321
+}
+
+
+### Modificar un comercio a partir de su CIF (La Esquina del Sabor)
+PATCH http://localhost:3001/api/comercios/A98765432 HTTP/1.1
+Content-Type: application/json
+
+{   
+    "direccion": "Avenida de los Sabores, 12"
+}
+
+
+### Borrar un comercio a partir de su CIF, y permite elegir entre un borrado lógico o físico (vía parámetro query)
+### Borrado físico (por defecto)
+DELETE http://localhost:3001/api/comercios/B12345679 HTTP/1.1
+
+#### Borrado lógico
+DELETE http://localhost:3001/api/comercios/A98765432?logicalDelete=true HTTP/1.1
+
+### Borrado físico (por defecto) para un comercio quue no existe
+DELETE http://localhost:3001/api/comercios/Z98765432 HTTP/1.1
+
+### Borrado lógico para un comercio quue no existe
+DELETE http://localhost:3001/api/comercios/Z98765432?logicalDelete=true HTTP/1.1
